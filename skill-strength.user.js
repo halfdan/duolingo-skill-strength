@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Skill Strength Viewer
 // @namespace    http://blog.fabianbecker.eu/
-// @version      0.1.1
+// @version      0.1
 // @description  Shows individual skill strength
 // @author       Fabian Becker
 // @match        https://www.duolingo.com/*
@@ -98,7 +98,7 @@ function f($) {
             .map(function(value, key) {
                 return {
                     name: key,
-                    strength: median(value.map(function(v) { return v.strength; })),                    
+                    strength: average(value.map(function(v) { return v.strength; })),                    
                     url: value[0].skill_url_title
                 }
             }).value();

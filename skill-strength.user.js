@@ -38,25 +38,35 @@ function f($) {
         
         console.log("Average Age (hours): " + averageAge / 3600);
         console.log("Median Age (hours): " + medianAge / 3600);
-        console.log(JSON.stringify(skillStrength));
         
         var el = $("<div class='box-gray' id='skillstrength'></div>"),
         	list = $("<ul class='list-leaderboard'></ul>"),
-            language = window.duo.user.attributes.learning_language;
+            language = window.duo.user.attributes.learning_language,
+            skillIdMap = {};
+        
+       	var languageData = duo.user.get('language_data'),
+            language = duo.user.get('learning_language');
+        
+        languageData[language].skills.each(function (skill) {
+            var key = skill.get('url_title');
+            skillIdMap[key] = skill.get('new_index');
+        });
         
         _.each(skillStrength, function (skill) {
             var item = $("<li class='list-leaderboard-item'></li>");
-            item.append("<span class='points'>" + (skill.strength * 100).toFixed(2) + "%</span>");
+            //item.append("<span class='skill-icon small gold avatar' style='width: 40px; heigh: 40px; margin: 0'><span style='zoom: 0.72; -moz-transform:scale(0.60); -moz-transform-origin: 0 0;' class='skill-icon-image skill-icon-"+skillIdMap[skill.url]+"'></span></span>");
+            item.append("<span class='points'>" + (skill.strength * 100).toFixed(1) + " %</span>");
             item.append("<span class='name'><a class='username' href='/skill/" + language + "/" + skill.url + "'>" + skill.name + "</a></span>");
             list.append(item);
         });
         
-        el.append(
-            $("<div class='stream-leaderboard'></div>").append(
-                $("<h2>Skill Strength</h2>"),
-                $("<div class='board'></div>").append(list)
-            )
+        el.append(            
+            $("<h2>Skill Strength</h2>"),
+            $("<div class='board'></div>").append(list)
         );
+        
+        el.append("<span><strong>Overall Strength: </strong>" + (averageStrength * 100).toFixed(1) + " %</span><br />");
+        el.append("<span><strong>Dead Words (0 Strength): </strong>" + zeroStrength + "/" + vocab.length + "</span>");
         
         $("section.sidebar-left > div.inner").append(el);
         isLoading = false;        
@@ -88,7 +98,7 @@ function f($) {
             .map(function(value, key) {
                 return {
                     name: key,
-                    strength: average(value.map(function(v) { return v.strength; })),
+                    strength: median(value.map(function(v) { return v.strength; })),                    
                     url: value[0].skill_url_title
                 }
             }).value();

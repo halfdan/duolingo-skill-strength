@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Skill Strength Viewer
 // @namespace    http://blog.fabianbecker.eu/
-// @version      0.1
+// @version      0.1.1
 // @description  Shows individual skill strength
 // @author       Fabian Becker
 // @match        https://www.duolingo.com/*
@@ -46,7 +46,7 @@ function f($) {
         
         _.each(skillStrength, function (skill) {
             var item = $("<li class='list-leaderboard-item'></li>");
-            item.append("<span class='points'>" + parseInt(skill.strength * 100, 10) + "%</span>");
+            item.append("<span class='points'>" + (skill.strength * 100).toFixed(2) + "%</span>");
             item.append("<span class='name'><a class='username' href='/skill/" + language + "/" + skill.url + "'>" + skill.name + "</a></span>");
             list.append(item);
         });

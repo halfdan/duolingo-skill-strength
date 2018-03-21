@@ -4,7 +4,7 @@
 // @version      0.2
 // @description  Shows individual skill strength
 // @author       Fabian Becker
-// @match        https://www.duolingo.com/*
+// @match        https://www.duolingo.com/
 // @grant        none
 // @updateURL https://github.com/halfdan/duolingo-skill-strength/raw/master/skill-strength.user.js
 // @downloadURL https://github.com/halfdan/duolingo-skill-strength/raw/master/skill-strength.user.js
@@ -53,10 +53,11 @@ function f($) {
         var zeroStrength = vocab.filter(function(v) { return v.strength === 0; }).length;
 
         var skillStrength = calculateSkillStrength(vocab);
-
-
         console.log("Average Strength: " + averageStrength);
         console.log("Dead words (0 strength): " + zeroStrength);
+        var deadwords = vocab.filter(function(v) { return v.strength === 0; });
+        var deadwordsDict = _.countBy(deadwords.map(a=>a.skill_url_title),function(word){return word;});
+        var allwordsDict = _.countBy(vocab.map(a=>a.skill_url_title),function(word){return word;});
 
         console.log("Average Age (hours): " + averageAge / 3600);
         console.log("Median Age (hours): " + medianAge / 3600);
@@ -70,7 +71,7 @@ function f($) {
         _.each(skillStrength, function (skill) {
             var item = $("<li class='list-skills-item'></li>");
             item.append("<span class='points'>" + (skill.strength * 100).toFixed(1) + " %</span>");
-            item.append("<span class='name'><a class='username' href='/skill/" + language + "/" + skill.url + "'>" + skill.name + "</a></span>");
+            item.append("<span class='name'><a class='username' href='/skill/" + language + "/" + skill.url + "/practice'>" + skill.name + "</a> ("+(skill.url in deadwordsDict?deadwordsDict[skill.url]:0)+"/"+allwordsDict[skill.url]+")</span>");
             list.append(item);
         });
 
@@ -90,7 +91,8 @@ function f($) {
         if ($("section.sidebar-left > div.inner").length > 0) {
             $("section.sidebar-left > div.inner").append(el);
         } else {
-            var parent = $("h2:contains('Leaderboard')").parent();
+            var parent = $("h2:contains('Leaderboard'),h2:contains('Bestenliste'),h2:contains('Tabella campioni')").parent();
+
 
             el.addClass(parent.attr('class'));
             el.insertAfter(parent);

@@ -152,7 +152,6 @@ function f($) {
     function showSkillStrength() {
         // Only show if we are on the home screen and it's not already there
         if (isHomeScreen() && !$('#skillstrength').length && !isLoading) {
-            //console.debug("[DuolingoSkillStrengthViewer] is loading");
             isLoading = true;
             $.ajax({
                 url: '/vocabulary/overview',
@@ -164,7 +163,6 @@ function f($) {
     }
 
     $(document).ready(function () {
-        //console.debug("[DuolingoSkillStrengthViewer] called load from document ready");
         showSkillStrength();
     });
 
@@ -172,7 +170,6 @@ function f($) {
         if (window.location.pathname == "/"
             && !document.getElementById("skillstrength")
             && !isLoading) {
-            //console.debug("[DuolingoSkillStrengthViewer] called load from mutation onChange");
             showSkillStrength();
         }
     }

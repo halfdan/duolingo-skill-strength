@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name         Duolingo Skill Strength Viewer
 // @namespace    http://blog.fabianbecker.eu/
-// @version      0.2
+// @version      0.2.1
 // @description  Shows individual skill strength
 // @author       Fabian Becker
-// @match        https://www.duolingo.com/
+// @match        https://www.duolingo.com/*
+// @downloadURL  https://github.com/halfdan/duolingo-skill-strength/raw/master/skill-strength.user.js
+// @updateURL    https://github.com/halfdan/duolingo-skill-strength/raw/master/skill-strength.user.js
+// @require      http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.2.1/lodash.min.js
 // @grant        none
-// @updateURL https://github.com/halfdan/duolingo-skill-strength/raw/master/skill-strength.user.js
-// @downloadURL https://github.com/halfdan/duolingo-skill-strength/raw/master/skill-strength.user.js
-// @require http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
-// @require https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.2.1/lodash.min.js
 // ==/UserScript==
 
 function addGlobalStyle(css) {
@@ -165,7 +165,18 @@ function f($) {
     $(document).ready(function () {
         showSkillStrength();
     });
-    $(document).ajaxComplete(function () {
-    	showSkillStrength();
+
+    function onChange(mutations) {
+        if (window.location.pathname == "/"
+            && !document.getElementById("skillstrength")
+            && !isLoading) {
+            showSkillStrength();
+        }
+    }
+
+    new MutationObserver(onChange).observe(document.body, {
+    childList : true,
+    subtree : true
     });
+
 }

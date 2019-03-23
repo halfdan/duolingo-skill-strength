@@ -91,8 +91,8 @@ function f($) {
         if ($("section.sidebar-left > div.inner").length > 0) {
             $("section.sidebar-left > div.inner").append(el);
         } else {
-            var parent = $("h2:contains('Leaderboard'),h2:contains('Bestenliste'),h2:contains('Tabella campioni'),h2:contains('Ranking'),h2:contains('Tablero de posiciones'),h2:contains('Classement')").parent();
-
+            //English - German - Italian - Portuguese - Spanish - French
+            var parent = $("h2:contains('Friends'),h2:contains('Freunde'),h2:contains('Amici'),h2:contains('Amigos'),h2:contains('Amis')").parent();
             el.addClass(parent.attr('class'));
             el.insertAfter(parent);
         }

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Duolingo Skill Strength Viewer
 // @namespace    http://blog.fabianbecker.eu/
-// @version      0.2.1
+// @version      0.2.2
 // @description  Shows individual skill strength
 // @author       Fabian Becker
 // @match        https://www.duolingo.com/*
